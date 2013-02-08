@@ -1,0 +1,49 @@
+1.install apache2 and php5
+
+2.First, issue the following command to disable the default Apache virtual host.
+
+a2dissite default
+
+3.Add virtual host needs its own file in the /etc/apache2/sites-available/ directory
+
+4. If you wish to configure a new virtual host or site, copy that file into the same directory with a name you choose. For example:
+
+sudo cp /etc/apache2/sites-available/default /etc/apache2/sites-available/mynewsite
+
+
+5. Create required directories for these sites by issuing the following commands:
+
+mkdir -p /var/www/example.net/public_html
+mkdir /var/www/example.net/logs
+
+mkdir -p /var/www/example.org/public_html
+mkdir /var/www/example.org/logs
+
+6.Add to httpd.conf
+
+<VirtualHost *:80>
+ DocumentRoot /var/www/doku.com
+ ServerName localhost
+</VirtualHost>
+
+Add to default
+
+DocumentRoot <location of website>/var/www
+ and
+
+edit AllowOverride to All
+  <Directory /var/www/>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride All
+                Order allow,deny
+                allow from all
+        </Directory>
+
+7.Enable the sites by issuing these commands:
+
+a2ensite example.net
+a2ensite example.org
+
+8.Finally, restart the Apache server to initialize all the changes, with this command:
+
+service apache2 restart
